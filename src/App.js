@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {withStyles} from "@material-ui/core";
+import Game from "./components/Game";
 
 class App extends Component {
     render() {
@@ -7,7 +8,7 @@ class App extends Component {
         
         return (
             <div>
-      <header className="App-header">
+              <Game/>
             </div>
         );
     }
