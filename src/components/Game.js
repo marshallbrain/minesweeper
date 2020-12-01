@@ -4,15 +4,15 @@ import styled from 'styled-components'
 import Minesweeper from "../Minesweeper";
 import Cell from "./Cell";
 
-const width = 16;
-const height = 16;
+const width = 8;
+const height = 8;
 
 class Game extends Component {
     
     constructor(props) {
         super(props);
         
-        this.minesweeper = new Minesweeper(width, height, 40)
+        this.minesweeper = new Minesweeper(width, height, 10)
         this.minesweeper.addUpdateCallback(grid => this.setState({grid: grid}))
         
         this.state = {

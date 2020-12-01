@@ -19,11 +19,12 @@ class Minesweeper {
     
     startGame(ignore = []) {
     
-        let mineRandom = [...Array(this.grid.length).keys()]
+        let mineRandom = new Set(Array(this.grid.length).keys())
         ignore.forEach(value => {
-            mineRandom.splice(value, 1)
+            mineRandom.delete(value)
         })
-    
+        
+        mineRandom = Array(...mineRandom)
         for (let i = 0; i < this.mineCount; i++) {
             let position = Math.floor(Math.random() * mineRandom.length)
         
@@ -43,8 +44,16 @@ class Minesweeper {
     }
     
     revealTile(index) {
+        if (this.shownGrid[index] !== "") {
+            return
+        }
+        
         if (!this.started) {
-            this.startGame([index, ...getSurrounding(index, this.width, this.height)])
+            let ignore = new Set()
+            getSurrounding(index, this.size.x, this.size.y).forEach(i =>
+                    getSurrounding(i, this.size.x, this.size.y).forEach(j => ignore.add(j))
+            )
+            this.startGame(Array(...ignore))
         }
         
         this.shownGrid[index] = this.grid[index]
