@@ -3,8 +3,7 @@
 class Minesweeper {
     
     constructor(width, height, mineCount) {
-        this.width = width
-        this.height = height
+        this.size = {x: width, y: height}
         this.grid = []
         this.shownGrid = []
         this.started = false
@@ -30,7 +29,7 @@ class Minesweeper {
         
             let index = mineRandom[position]
             this.grid[index] = 9
-            getSurrounding(index, this.width, this.height).forEach(value => {
+            getSurrounding(index, this.size.x, this.size.y).forEach(value => {
                 if (this.grid[value] !== 9) {
                     this.grid[value] += 1
                 }
@@ -49,8 +48,31 @@ class Minesweeper {
         }
         
         this.shownGrid[index] = this.grid[index]
+        if (this.grid[index] === 0) {
+            this.revealConnectingBlanks(index)
+        }
         
         this.updateCallback.forEach(callback => callback(this.shownGrid))
+        
+    }
+    
+    revealConnectingBlanks(index) {
+        let toSearch = [index]
+        let searchSet = new Set(toSearch)
+        let hasSearch = new Set()
+        
+        while (toSearch.length) {
+            let cell = toSearch.pop()
+            searchSet.delete(cell)
+            hasSearch.add(cell)
+            getSurrounding(cell, this.size.x, this.size.y).forEach(value => {
+                if (this.grid[value] === 0 && !hasSearch.has(value) && !searchSet.has(value)) {
+                    toSearch.push(value)
+                    searchSet.add(value)
+                }
+                this.shownGrid[value] = this.grid[value]
+            })
+        }
         
     }
     
