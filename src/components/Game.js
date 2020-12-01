@@ -12,18 +12,27 @@ class Game extends Component {
     constructor(props) {
         super(props);
         
-        this.minesweeper = new Minesweeper(width, height, 40, [])
+        this.minesweeper = new Minesweeper(width, height, 40)
+        this.minesweeper.addUpdateCallback(grid => this.setState({grid: grid}))
+        
+        this.state = {
+            grid: this.minesweeper.shownGrid,
+        }
+        
         
     }
     
     render() {
         const {classes} = this.props
-        
         const cellList = []
         
+        const clickCell = (index) => {
+            this.minesweeper.revealTile(index)
+        }
+        
         let i = 0
-        this.minesweeper.grid.forEach((value) => {
-            cellList.push(<Cell key={i}>{value}</Cell>)
+        this.state.grid.forEach((value) => {
+            cellList.push(<Cell key={i} index={i} onClick={clickCell}>{value}</Cell>)
             i++
         })
         return (

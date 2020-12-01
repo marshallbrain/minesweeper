@@ -19,7 +19,7 @@ class Cell extends Component {
         const {classes, children} = this.props
         
         return (
-            <Tile className={classes.root}>
+            <Tile className={classes.root} onClick={() => this.props.onClick(this.props.index)}>
                 {(children !== 0) && children}
             </Tile>
         );
